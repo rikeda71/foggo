@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"os"
 	"os/exec"
 	"strings"
 	"text/template"
+
+	"github.com/s14t284/foggo/internal/generator/templates"
 )
 
 type Generator struct {
@@ -22,12 +23,7 @@ func InitializeGenerator() *Generator {
 
 // GenerateFOP is the function to generate code of functional option pattern from struct
 func (g *Generator) GenerateFOP(pkgName string, structName string, sts []*StructField) (string, error) {
-	cwd, err := os.Getwd()
-	if err != nil {
-		return "", fmt.Errorf("get executable directory error: %w", err)
-	}
-
-	tpl := template.Must(template.New("functional_option_pattern.go.tpl").ParseFiles(cwd + "/internal/generator/templates/functional_option_pattern.go.tpl"))
+	tpl := template.Must(template.New("a").Parse(templates.FOPTemplate))
 	if !g.checkStructFieldFormat(sts) {
 		return "", fmt.Errorf("%s have same name fields", structName)
 	}
@@ -49,7 +45,7 @@ func (g *Generator) format(b *bytes.Buffer) (string, error) {
 	var err error
 	code := b.String()
 	if g.goimports {
-		code, err = g.applyGoimports(code)
+		code, err = g.applyGoImports(code)
 		if err != nil {
 			return "", err
 		}
@@ -57,7 +53,7 @@ func (g *Generator) format(b *bytes.Buffer) (string, error) {
 	return code, nil
 }
 
-func (g *Generator) applyGoimports(code string) (string, error) {
+func (g *Generator) applyGoImports(code string) (string, error) {
 	cmd := exec.Command("goimports")
 	stdinPipe, err := cmd.StdinPipe()
 	if err != nil {
@@ -95,7 +91,7 @@ func (g *Generator) checkStructFieldFormat(sts []*StructField) bool {
 		name := strings.ToLower(st1.Name)
 		cnt := 0
 		for _, st2 := range sts {
-			if name == st2.Name {
+			if name == strings.ToLower(st2.Name) {
 				cnt++
 			}
 		}
