@@ -1,10 +1,10 @@
-name: test
+name: ci
 on:
   pull_request:
     types: [ opened, synchronize ]
 jobs:
   setup:
-    name: Setup
+    name: Setup for Go ${{ matrix.version }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -30,10 +30,11 @@ jobs:
 
       - name: Get dependencies
         run: |
-          go get -v -t -d ./...
           go install golang.org/x/tools/cmd/goimports@latest
+          go get -v -t -d ./...
 
   test:
+    name: Test in Go ${{ matrix.version }}
     needs: setup
     runs-on: ubuntu-latest
     steps:
@@ -44,6 +45,7 @@ jobs:
         run: go test -v ./... -v
 
   lint:
+    name: Lint in Go ${{ matrix.version }}
     needs: setup
     runs-on: ubuntu-latest
     steps:
@@ -54,6 +56,7 @@ jobs:
         uses: golangci/golangci-lint-action@v2
 
   build-test:
+    name: Build test in Go ${{ matrix.version }}
     needs: setup
     runs-on: ubuntu-latest
     steps:

@@ -16,6 +16,9 @@ func TestCollectFields(t *testing.T) {
 		t.FailNow()
 	}
 	st, err := ParsePackageInfo(cwd + "/../../testdata")
+	if err != nil {
+		t.FailNow()
+	}
 
 	type args struct {
 		typeName string
