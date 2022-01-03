@@ -38,12 +38,6 @@ func WithB(B int) TestDataOption {
 		args.B = B
 	}
 }
-
-func WithC(C int) TestDataOption {
-	return func(args *TestData) {
-		args.C = C
-	}
-}
 `
 	expectedFOPMinimumStr = expectedTemplateBaseStr + `
 type TestDataOption func(*TestData)
