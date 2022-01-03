@@ -61,4 +61,4 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build for test
-        uses: go build
+        run: go build
