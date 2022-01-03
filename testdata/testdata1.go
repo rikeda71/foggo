@@ -1,6 +1,6 @@
 package testdata
 
-type TestData struct {
+type Data1 struct {
 	A string
 	B int
 	C string `foggo:"-"`

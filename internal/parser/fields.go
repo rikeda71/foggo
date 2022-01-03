@@ -11,10 +11,11 @@ import (
 )
 
 const (
-	TAG_KEY      = "foggo"
-	IGNORE_VALUE = "-"
+	TagKey      = "foggo"
+	IgnoreValue = "-"
 )
 
+// CollectFields is function to get fields of struct type and index of struct type from ast files
 func CollectFields(typeName string, astFiles []*ast.File) ([]*generator.StructField, int, error) {
 	for i, af := range astFiles {
 		for _, decl := range af.Decls {
@@ -67,7 +68,7 @@ func internalConvert(field *ast.Field) (*generator.StructField, error) {
 	if err != nil {
 		return nil, err
 	}
-	ignore := tag != nil && tag.Name == IGNORE_VALUE
+	ignore := tag != nil && tag.Name == IgnoreValue
 	fieldType := types.ExprString(field.Type)
 
 	var fieldName string
@@ -91,12 +92,12 @@ func parseTag(tag *ast.BasicLit) (*structtag.Tag, error) {
 		return nil, nil
 	}
 
-	tags, err := structtag.Parse(tag.Value)
+	tags, err := structtag.Parse(strings.Replace(tag.Value, "`", "", -1))
 	if err != nil {
 		return nil, fmt.Errorf("parse tag error: %w", err)
 	}
 
-	val, err := tags.Get(TAG_KEY)
+	val, err := tags.Get(TagKey)
 	if err != nil {
 		return nil, fmt.Errorf("get tag error: %w", err)
 	}
