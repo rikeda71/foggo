@@ -1,0 +1,64 @@
+name: test
+on:
+  pull_request:
+    types: [ opened, synchronize ]
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [
+          1.16,
+          1.17,
+        ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.version }}
+
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-cache
+
+      - name: Get dependencies
+        run: |
+          go get -v -t -d ./...
+          go install golang.org/x/tools/cmd/goimports@latest
+
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Test
+        run: go test -v ./... -v
+
+  lint:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Lint
+        uses: golangci/golangci-lint-action@v2
+
+  build-test:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build for test
+        uses: go build
