@@ -29,6 +29,7 @@ jobs:
           export GOPATH=`go env --json | jq -r .GOPATH`
           sudo cp $GOPATH/bin/goimports /usr/bin/
           sudo cp $GOPATH/bin/goveralls /usr/bin/
+          which goimports
           go get -v -t -d ./...
 
   test:
@@ -41,7 +42,11 @@ jobs:
 
       - name: Test
         run: |
-          go test -v ./... -v
+          export GOPATH=`go env --json | jq -r .GOPATH`
+          export PATH="$GOPATH/bin:$PATH"
+          echo $PATH
+          which goimports
+          go test -v -cover ./...
           goveralls -service=github
         env:
           COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
