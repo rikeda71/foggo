@@ -49,10 +49,13 @@ jobs:
 
       - name: Test
         run: |
-          go test -v -cover ./...
-          goveralls -service=github
-        env:
-          COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          go test -v -coverprofile=profile.cov ./...
+
+      - name: Send coverage
+        uses: shogo82148/actions-goveralls@v1
+        with:
+          path-to-profile: profile.cov
+          parallel: true
 
   lint:
     name: Lint
