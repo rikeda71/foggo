@@ -8,10 +8,9 @@ import (
 )
 
 type PackageInfo struct {
-	Name      string
-	AstFiles  []*ast.File
-	Paths     []string
-	FileNames []string
+	Name     string
+	AstFiles []*ast.File
+	Paths    []string
 }
 
 func ParsePackageInfo(path string) (*PackageInfo, error) {
