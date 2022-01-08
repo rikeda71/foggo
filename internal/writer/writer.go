@@ -8,9 +8,13 @@ import (
 
 type Writer struct{}
 
+func InitializeWriter() *Writer {
+	return &Writer{}
+}
+
 func (w *Writer) Write(code string, baseFileName string) error {
-	fname := w.createFileName(baseFileName)
-	f, err := os.Create(fname)
+	fn := w.createFileName(baseFileName)
+	f, err := os.Create(fn)
 	if err != nil {
 		return fmt.Errorf("file open error: %w", err)
 	}
