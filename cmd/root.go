@@ -48,8 +48,8 @@ $ foggo foc --source ${STRUCT_NAME} --package /path/to/package
 		"Target struct name (required)",
 		"Package name having target struct (required)",
 	}
-	rootCmd.PersistentFlags().StringVarP(&Flag.Source, args[0], shortArgs[0], "", usages[0])
-	rootCmd.PersistentFlags().StringVarP(&Flag.Package, args[1], shortArgs[1], "", usages[1])
+	rootCmd.PersistentFlags().StringVarP(&Args.Source, args[0], shortArgs[0], "", usages[0])
+	rootCmd.PersistentFlags().StringVarP(&Args.Package, args[1], shortArgs[1], "", usages[1])
 
 	for _, arg := range args {
 		err := rootCmd.MarkPersistentFlagRequired(arg)

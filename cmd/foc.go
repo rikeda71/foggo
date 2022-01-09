@@ -40,17 +40,17 @@ func generateFOC(out io.Writer) error {
 		return err
 	}
 
-	pkg, err := parser.ParsePackageInfo(Flag.Package)
+	pkg, err := parser.ParsePackageInfo(Args.Package)
 	if err != nil {
 		return err
 	}
 
-	fields, i, err := parser.CollectFields(Flag.Source, pkg.AstFiles)
+	fields, i, err := parser.CollectFields(Args.Source, pkg.AstFiles)
 	if err != nil {
 		return err
 	}
 
-	code, err := g.GenerateFOP(pkg.Name, Flag.Source, fields)
+	code, err := g.GenerateFOP(pkg.Name, Args.Source, fields)
 	if err != nil {
 		return err
 	}
