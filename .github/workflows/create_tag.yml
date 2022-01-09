@@ -20,5 +20,5 @@ jobs:
 
       - name: Create Tag
         run: |
-          git tag ${env.VERSION}
-          git push origin ${env.VERSION}
+          git tag ${{ env.VERSION }}
+          git push origin ${{ env.VERSION }}
