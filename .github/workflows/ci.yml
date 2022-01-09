@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '**/*.go'
 
 env:
   GO_VERSION: 1.17

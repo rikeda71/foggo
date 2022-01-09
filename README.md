@@ -1,5 +1,9 @@
 # foggo
 
+[![ci](https://github.com/s14t284/foggo/actions/workflows/ci.yml/badge.svg)](https://github.com/s14t284/foggo/actions/workflows/ci.yml)
+[![Release](https://github.com/s14t284/foggo/actions/workflows/release.yml/badge.svg)](https://github.com/s14t284/foggo/actions/workflows/release.yml)
+[![Coverage Status](https://coveralls.io/repos/github/s14t284/foggo/badge.svg?branch=main)](https://coveralls.io/github/s14t284/foggo?branch=main)
+
 __foggo__ is generator of `Functional Option Pattern` from struct field in Golang code.
 
 ## Installation
@@ -48,7 +52,6 @@ Global Flags:
     # struct must be set struct type name 
     # package must be package path
     $ foggo foc --struct Image --package image
-    ~~~ success to write functional option pattern code to /path/to/image_gen.go
     ```
 
 3. then `foggo` generates functional option pattern code to `./image/image_gen.go`.
@@ -132,8 +135,6 @@ Global Flags:
     ```
 
 3. the `foggo` generate functional option pattern code to all files written `go:generate`. 
-
-### go:generate mode
 
 ## Functional Option Pattern ?
 `Functional Option Pattern` is one of the most common design patterns used in Golang code.
