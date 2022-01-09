@@ -5,6 +5,10 @@ on:
     types: [ closed ]
     branches:
       - 'main'
+    paths-ignore:
+      - 'README.md'
+      - '.gitignore'
+      - '.github/workflows/**'
 
 env:
   GO_VERSION: 1.17
