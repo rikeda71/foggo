@@ -39,7 +39,7 @@ func initializeRootCmd() (*cobra.Command, error) {
 ## Generate 'Functional Option Pattern' code
 $ foggo foc --struct ${STRUCT_TYPE_NAME} --package ${PACKAGE_PATH}
 `,
-		Version: "0.0.3",
+		Version: "0.0.4",
 	}
 
 	// set arguments
