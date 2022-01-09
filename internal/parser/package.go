@@ -13,12 +13,13 @@ type PackageInfo struct {
 	Paths    []string
 }
 
-func ParsePackageInfo(path string) (*PackageInfo, error) {
+func ParsePackageInfo(p string) (*PackageInfo, error) {
 	cfg := &packages.Config{
 		Mode:  packages.NeedName | packages.NeedSyntax | packages.NeedFiles,
 		Tests: false,
 	}
-	packagesList, err := packages.Load(cfg, path)
+
+	packagesList, err := packages.Load(cfg, p)
 	if err != nil {
 		return nil, err
 	}
@@ -27,10 +28,10 @@ func ParsePackageInfo(path string) (*PackageInfo, error) {
 		return nil, fmt.Errorf("error: %d packages found", len(packagesList))
 	}
 
-	p := packagesList[0]
+	pl := packagesList[0]
 	return &PackageInfo{
-		Name:     p.Name,
-		AstFiles: p.Syntax,
-		Paths:    p.GoFiles,
+		Name:     pl.Name,
+		AstFiles: pl.Syntax,
+		Paths:    pl.GoFiles,
 	}, nil
 }
