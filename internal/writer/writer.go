@@ -7,10 +7,15 @@ import (
 	"strings"
 )
 
-type Writer struct{}
+type Writer struct {
+	logger *log.Logger
+}
 
-func InitializeWriter() *Writer {
-	return &Writer{}
+func InitializeWriter(logger *log.Logger) (*Writer, error) {
+	if logger == nil {
+		return nil, fmt.Errorf("initialize writer error: logger is nil")
+	}
+	return &Writer{logger: logger}, nil
 }
 
 func (w *Writer) Write(code string, baseFileName string) error {
@@ -25,7 +30,7 @@ func (w *Writer) Write(code string, baseFileName string) error {
 		return err
 	}
 
-	log.Println(fmt.Sprintf("success to write functional option pattern code to %s", fn))
+	w.logger.Println(fmt.Sprintf("success to write functional option pattern code to %s", fn))
 	return nil
 }
 

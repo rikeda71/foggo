@@ -5,7 +5,11 @@ Copyright © 2022 s14t284 rikeda71@gmail.com
 package cmd
 
 import (
+	"io"
+	"os"
+
 	"github.com/s14t284/foggo/internal/generator"
+	"github.com/s14t284/foggo/internal/logger"
 	"github.com/s14t284/foggo/internal/parser"
 	"github.com/s14t284/foggo/internal/writer"
 	"github.com/spf13/cobra"
@@ -20,25 +24,33 @@ func initializeFocCommand() *cobra.Command {
 ref.
 - https://commandcenter.blogspot.com/2014/01/self-referential-functions-and-design.html
 - https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis`,
-		RunE: generateFOC,
+		RunE: func(_ *cobra.Command, _ []string) error {
+			out := os.Stdout
+			return generateFOC(out)
+		},
 	}
 }
 
-func generateFOC(cmd *cobra.Command, args []string) error {
+// generateFOC generate functional option pattern code
+func generateFOC(out io.Writer) error {
+	l := logger.InitializeLogger(out, "[FOC Generator] ")
 	g := generator.InitializeGenerator()
-	w := writer.InitializeWriter()
+	w, err := writer.InitializeWriter(l)
+	if err != nil {
+		return err
+	}
 
 	pkg, err := parser.ParsePackageInfo(Flag.Package)
 	if err != nil {
 		return err
 	}
 
-	sts, i, err := parser.CollectFields(Flag.Source, pkg.AstFiles)
+	fields, i, err := parser.CollectFields(Flag.Source, pkg.AstFiles)
 	if err != nil {
 		return err
 	}
 
-	code, err := g.GenerateFOP(pkg.Name, Flag.Source, sts)
+	code, err := g.GenerateFOP(pkg.Name, Flag.Source, fields)
 	if err != nil {
 		return err
 	}
