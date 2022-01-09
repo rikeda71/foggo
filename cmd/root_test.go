@@ -14,4 +14,5 @@ func Test_initializeRootCmd(t *testing.T) {
 	a.NotEqual("", cmd.Use)
 	a.NotEqual("", cmd.Short)
 	a.NotEqual("", cmd.Long)
+	a.NotEqual("", cmd.Version)
 }

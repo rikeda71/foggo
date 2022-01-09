@@ -16,7 +16,7 @@ const (
 )
 
 // CollectFields is function to get fields of struct type and index of struct type from ast files
-func CollectFields(source string, astFiles []*ast.File) ([]*generator.StructField, int, error) {
+func CollectFields(structName string, astFiles []*ast.File) ([]*generator.StructField, int, error) {
 	for i, af := range astFiles {
 		for _, decl := range af.Decls {
 			genDecl, ok := decl.(*ast.GenDecl)
@@ -30,8 +30,7 @@ func CollectFields(source string, astFiles []*ast.File) ([]*generator.StructFiel
 					continue
 				}
 
-				structName := typeSpec.Name.Name
-				if source != structName {
+				if structName != typeSpec.Name.Name {
 					continue
 				}
 				structType, ok := typeSpec.Type.(*ast.StructType)
@@ -48,7 +47,7 @@ func CollectFields(source string, astFiles []*ast.File) ([]*generator.StructFiel
 			}
 		}
 	}
-	return nil, -1, fmt.Errorf("there is no suitable struct that matches given source [source=%s]", source)
+	return nil, -1, fmt.Errorf("there is no suitable struct that matches given structName [structName=%s]", structName)
 }
 
 func convertToStructFieldsFromAstFields(fields []*ast.Field) ([]*generator.StructField, error) {

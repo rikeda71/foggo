@@ -1,9 +1,11 @@
 name: ci
 on:
   pull_request:
-    types: [ opened, synchronize, closed ]
+    types: [ opened, synchronize ]
+  push:
     branches:
       - main
+
 env:
   GO_VERSION: 1.17
 

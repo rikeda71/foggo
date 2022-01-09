@@ -7,6 +7,7 @@ package cmd
 import (
 	"io"
 	"os"
+	"path"
 
 	"github.com/s14t284/foggo/internal/generator"
 	"github.com/s14t284/foggo/internal/logger"
@@ -40,17 +41,21 @@ func generateFOC(out io.Writer) error {
 		return err
 	}
 
-	pkg, err := parser.ParsePackageInfo(Args.Package)
+	p := Args.Package
+	if p != "." {
+		p = "./" + path.Clean(Args.Package)
+	}
+	pkg, err := parser.ParsePackageInfo(p)
 	if err != nil {
 		return err
 	}
 
-	fields, i, err := parser.CollectFields(Args.Source, pkg.AstFiles)
+	fields, i, err := parser.CollectFields(Args.Struct, pkg.AstFiles)
 	if err != nil {
 		return err
 	}
 
-	code, err := g.GenerateFOP(pkg.Name, Args.Source, fields)
+	code, err := g.GenerateFOP(pkg.Name, Args.Struct, fields)
 	if err != nil {
 		return err
 	}

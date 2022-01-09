@@ -23,7 +23,7 @@ func Test_initializeFocCommand(t *testing.T) {
 func Test_generateFOC(t *testing.T) {
 	tests := []struct {
 		name     string
-		source   string
+		struct_  string
 		package_ string
 		wantOut  string
 		wantErr  assert.ErrorAssertionFunc
@@ -31,11 +31,11 @@ func Test_generateFOC(t *testing.T) {
 		{"nominal: Data1", "Data1", "../testdata", "success to write functional option pattern code to", assert.NoError},
 		{"nominal: Data2", "Data2", "../testdata", "success to write functional option pattern code to", assert.NoError},
 		{"non_nominal: parse package error", "Data2", "./", "", assert.Error},
-		{"non_nominal: collect fields from source error", "Data3", "../testdata", "", assert.Error},
+		{"non_nominal: collect fields from struct type error", "Data3", "../testdata", "", assert.Error},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			Args.Source = tt.source
+			Args.Struct = tt.struct_
 			Args.Package = tt.package_
 			out := &bytes.Buffer{}
 			err := generateFOC(out)

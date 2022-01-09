@@ -37,29 +37,32 @@ func initializeRootCmd() (*cobra.Command, error) {
 # Example:
 
 ## Generate 'Functional Option Pattern' code
-$ foggo foc --source ${STRUCT_NAME} --package /path/to/package
+$ foggo foc --struct ${STRUCT_TYPE_NAME} --package ${PACKAGE_PATH}
 `,
+		Version: "0.0.3",
 	}
 
 	// set arguments
-	args := []string{"source", "package"}
+	args := []string{"struct", "package"}
 	shortArgs := []string{"s", "p"}
 	usages := []string{
 		"Target struct name (required)",
 		"Package name having target struct (required)",
 	}
-	rootCmd.PersistentFlags().StringVarP(&Args.Source, args[0], shortArgs[0], "", usages[0])
-	rootCmd.PersistentFlags().StringVarP(&Args.Package, args[1], shortArgs[1], "", usages[1])
+	rootCmd.PersistentFlags().StringVarP(&Args.Struct, args[0], shortArgs[0], "", usages[0])
+	rootCmd.PersistentFlags().StringVarP(&Args.Package, args[1], shortArgs[1], ".", usages[1])
 
-	for _, arg := range args {
-		err := rootCmd.MarkPersistentFlagRequired(arg)
-		if err != nil {
-			return nil, fmt.Errorf("initialize command error: %s", err)
-		}
+	// set struct to required parameter
+	err := rootCmd.MarkPersistentFlagRequired(args[0])
+	if err != nil {
+		return nil, fmt.Errorf("initialize command error: %s", err)
 	}
 
 	// set sub commands
 	rootCmd.AddCommand(initializeFocCommand())
+
+	// set version format
+	rootCmd.SetVersionTemplate("{{ .Version }}")
 
 	return rootCmd, nil
 }
