@@ -21,8 +21,14 @@ THE SOFTWARE.
 */
 package main
 
-import "github.com/s14t284/foggo/cmd"
+import (
+	"log"
+
+	"github.com/s14t284/foggo/cmd"
+)
 
 func main() {
-	cmd.Execute()
+	if err := cmd.Execute(); err != nil {
+		log.Fatalln(err)
+	}
 }

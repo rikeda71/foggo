@@ -11,7 +11,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func generateFOC(_ *cobra.Command, _ []string) error {
+func initializeFocCommand() *cobra.Command {
+	// focCmd represents the foc command
+	return &cobra.Command{
+		Use:   "foc",
+		Short: "command to generate 'Functional Option Pattern' code of golang",
+		Long: `'foc' is the command to command to generate 'Functional Option Pattern' code of golang.
+ref.
+- https://commandcenter.blogspot.com/2014/01/self-referential-functions-and-design.html
+- https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis`,
+		RunE: generateFOC,
+	}
+}
+
+func generateFOC(cmd *cobra.Command, args []string) error {
 	g := generator.InitializeGenerator()
 	w := writer.InitializeWriter()
 
@@ -36,19 +49,4 @@ func generateFOC(_ *cobra.Command, _ []string) error {
 	}
 
 	return nil
-}
-
-// focCmd represents the foc command
-var focCmd = &cobra.Command{
-	Use:   "foc",
-	Short: "command to generate 'Functional Option Pattern' code of golang",
-	Long: `'foc' is the command to command to generate 'Functional Option Pattern' code of golang.
-ref.
-- https://commandcenter.blogspot.com/2014/01/self-referential-functions-and-design.html
-- https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis`,
-	RunE: generateFOC,
-}
-
-func init() {
-	rootCmd.AddCommand(focCmd)
 }

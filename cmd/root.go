@@ -23,30 +23,24 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/spf13/cobra"
 )
 
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:   "foggo",
-	Short: "'foggo' is the cli to generate 'Functional Option Pattern' code of golang from golang code",
-	Long: `'foggo' is the cli to generate 'Functional Option Pattern' code of golang from golang code
+// initializeRootCmd generate cobra.Command of root command
+func initializeRootCmd() (*cobra.Command, error) {
+	// rootCmd represents the base command when called without any subcommands
+	rootCmd := &cobra.Command{
+		Use:   "foggo",
+		Short: "'foggo' is the cli to generate 'Functional Option Pattern' code of golang from golang code",
+		Long: `'foggo' is the cli to generate 'Functional Option Pattern' code of golang from golang code
 # Example:
 
 ## Generate 'Functional Option Pattern' code
 $ foggo foc --source ${STRUCT_NAME} --package /path/to/package
 `,
-}
+	}
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
-func Execute() {
-	_ = rootCmd.Execute()
-}
-
-func init() {
 	// set arguments
 	args := []string{"source", "package"}
 	shortArgs := []string{"s", "p"}
@@ -60,7 +54,23 @@ func init() {
 	for _, arg := range args {
 		err := rootCmd.MarkPersistentFlagRequired(arg)
 		if err != nil {
-			log.Fatalln(fmt.Sprintf("initialize command error: %s", err))
+			return nil, fmt.Errorf("initialize command error: %s", err)
 		}
 	}
+
+	// set sub commands
+	rootCmd.AddCommand(initializeFocCommand())
+
+	return rootCmd, nil
+}
+
+// Execute adds all child commands to the root command and sets flags appropriately.
+// This is called by main.main(). It only needs to happen once to the rootCmd.
+func Execute() error {
+	rootCmd, err := initializeRootCmd()
+	if err != nil {
+		return err
+	}
+
+	return rootCmd.Execute()
 }
