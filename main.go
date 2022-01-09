@@ -21,8 +21,10 @@ THE SOFTWARE.
 */
 package main
 
-import "github.com/s14t284/foggo/cmd"
+import (
+	"github.com/s14t284/foggo/cmd"
+)
 
 func main() {
-	cmd.Execute()
+	_ = cmd.Execute()
 }

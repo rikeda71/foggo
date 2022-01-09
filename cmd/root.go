@@ -23,74 +23,54 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
-	"github.com/s14t284/foggo/internal/generator"
-	"github.com/s14t284/foggo/internal/parser"
-	"github.com/s14t284/foggo/internal/writer"
 	"github.com/spf13/cobra"
 )
 
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:   "foggo",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+// initializeRootCmd generate cobra.Command of root command
+func initializeRootCmd() (*cobra.Command, error) {
+	// rootCmd represents the base command when called without any subcommands
+	rootCmd := &cobra.Command{
+		Use:   "foggo",
+		Short: "'foggo' is the cli to generate 'Functional Option Pattern' code of golang from golang code",
+		Long: `'foggo' is the cli to generate 'Functional Option Pattern' code of golang from golang code
+# Example:
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+## Generate 'Functional Option Pattern' code
+$ foggo foc --source ${STRUCT_NAME} --package /path/to/package
+`,
+	}
+
+	// set arguments
+	args := []string{"source", "package"}
+	shortArgs := []string{"s", "p"}
+	usages := []string{
+		"Target struct name (required)",
+		"Package name having target struct (required)",
+	}
+	rootCmd.PersistentFlags().StringVarP(&Args.Source, args[0], shortArgs[0], "", usages[0])
+	rootCmd.PersistentFlags().StringVarP(&Args.Package, args[1], shortArgs[1], "", usages[1])
+
+	for _, arg := range args {
+		err := rootCmd.MarkPersistentFlagRequired(arg)
+		if err != nil {
+			return nil, fmt.Errorf("initialize command error: %s", err)
+		}
+	}
+
+	// set sub commands
+	rootCmd.AddCommand(initializeFocCommand())
+
+	return rootCmd, nil
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
-func Execute() {
-	err := rootCmd.Execute()
+func Execute() error {
+	rootCmd, err := initializeRootCmd()
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return err
 	}
 
-	g := generator.InitializeGenerator()
-	w := writer.Writer{}
-	pkgName := "./internal/parser"
-	structName := "PackageInfo"
-	pkg, err := parser.ParsePackageInfo(pkgName)
-
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	sts, i, err := parser.CollectFields(structName, pkg.AstFiles)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	code, err := g.GenerateFOP(pkg.Name, structName, sts)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	err = w.Write(code, pkg.Paths[i])
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-}
-
-func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.foggo.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	return rootCmd.Execute()
 }
