@@ -47,7 +47,7 @@ $ foggo foc --struct ${STRUCT_TYPE_NAME} --package ${PACKAGE_PATH}
 	shortArgs := []string{"s", "p"}
 	usages := []string{
 		"Target struct name (required)",
-		"Package name having target struct (required)",
+		"Package name having target struct",
 	}
 	rootCmd.PersistentFlags().StringVarP(&Args.Struct, args[0], shortArgs[0], "", usages[0])
 	rootCmd.PersistentFlags().StringVarP(&Args.Package, args[1], shortArgs[1], ".", usages[1])
