@@ -3,6 +3,8 @@ package cmd
 import (
 	"bytes"
 	"fmt"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -41,6 +43,15 @@ func Test_generateFOC(t *testing.T) {
 				return
 			}
 			assert.Containsf(t, out.String(), tt.wantOut, "generateFOC(%v)", out)
+
+			// remove generated files
+			files, err := filepath.Glob(fmt.Sprintf("%s/*_gen.go", tt.package_))
+			assert.NoError(t, err)
+			for _, f := range files {
+				fmt.Println(f)
+				err = os.Remove(f)
+				assert.NoError(t, err)
+			}
 		})
 	}
 }
