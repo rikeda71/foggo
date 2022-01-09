@@ -39,6 +39,7 @@ func initializeRootCmd() (*cobra.Command, error) {
 ## Generate 'Functional Option Pattern' code
 $ foggo foc --struct ${STRUCT_TYPE_NAME} --package ${PACKAGE_PATH}
 `,
+		Version: "0.0.3",
 	}
 
 	// set arguments
@@ -51,7 +52,7 @@ $ foggo foc --struct ${STRUCT_TYPE_NAME} --package ${PACKAGE_PATH}
 	rootCmd.PersistentFlags().StringVarP(&Args.Struct, args[0], shortArgs[0], "", usages[0])
 	rootCmd.PersistentFlags().StringVarP(&Args.Package, args[1], shortArgs[1], ".", usages[1])
 
-	// set struct_ to required parameter
+	// set struct to required parameter
 	err := rootCmd.MarkPersistentFlagRequired(args[0])
 	if err != nil {
 		return nil, fmt.Errorf("initialize command error: %s", err)
@@ -59,6 +60,9 @@ $ foggo foc --struct ${STRUCT_TYPE_NAME} --package ${PACKAGE_PATH}
 
 	// set sub commands
 	rootCmd.AddCommand(initializeFocCommand())
+
+	// set version format
+	rootCmd.SetVersionTemplate("{{ .Version }}")
 
 	return rootCmd, nil
 }
