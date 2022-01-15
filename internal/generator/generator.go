@@ -21,9 +21,20 @@ func InitializeGenerator() *Generator {
 	}
 }
 
-// GenerateFOP is the function to generate code of functional option pattern from struct
+// GenerateFOP is the function to generate code of Functional Option Pattern from struct
 func (g *Generator) GenerateFOP(pkgName string, structName string, sts []*StructField) (string, error) {
-	tpl := template.Must(template.New("a").Parse(templates.FOPTemplate))
+	tpl := template.Must(template.New("t").Parse(templates.FOPTemplate))
+	return g.generateInternal(pkgName, structName, sts, tpl)
+}
+
+// GenerateAFOP is the function to generate code of Applicable Functional Option Pattern from struct
+func (g *Generator) GenerateAFOP(pkgName string, structName string, sts []*StructField) (string, error) {
+	tpl := template.Must(template.New("t").Parse(templates.AFOPTemplate))
+	return g.generateInternal(pkgName, structName, sts, tpl)
+}
+
+// generateInternal is the function of the internal logic to generate Functional Option Pattern code
+func (g *Generator) generateInternal(pkgName string, structName string, sts []*StructField, tpl *template.Template) (string, error) {
 	if !g.checkStructFieldFormat(sts) {
 		return "", fmt.Errorf("%s have same name fields", structName)
 	}

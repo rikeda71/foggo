@@ -10,17 +10,17 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_initializeFocCommand(t *testing.T) {
+func Test_initializeAfopCommand(t *testing.T) {
 	// assert initialization and check required parameters
 	a := assert.New(t)
-	cmd := initializeFocCommand()
+	cmd := initializeAfopCommand()
 	a.NotEqual("", cmd.Use)
 	a.NotEqual("", cmd.Short)
 	a.NotEqual("", cmd.Long)
 	a.NotNil(cmd.RunE)
 }
 
-func Test_generateFOC(t *testing.T) {
+func Test_generateAFOP(t *testing.T) {
 	tests := []struct {
 		name     string
 		struct_  string
@@ -38,11 +38,11 @@ func Test_generateFOC(t *testing.T) {
 			Args.Struct = tt.struct_
 			Args.Package = tt.package_
 			out := &bytes.Buffer{}
-			err := generateFOC(out)
-			if !tt.wantErr(t, err, fmt.Sprintf("generateFOC(%v)", out)) {
+			err := generateAFOP(out)
+			if !tt.wantErr(t, err, fmt.Sprintf("generateFOP(%v)", out)) {
 				return
 			}
-			assert.Containsf(t, out.String(), tt.wantOut, "generateFOC(%v)", out)
+			assert.Containsf(t, out.String(), tt.wantOut, "generateAFOP(%v)", out)
 
 			// remove generated files
 			files, err := filepath.Glob(fmt.Sprintf("%s/*_gen.go", tt.package_))

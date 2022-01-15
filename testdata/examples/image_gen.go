@@ -2,32 +2,40 @@
 
 package examples
 
-type ImageOption func(*Image)
+type ImageOption interface {
+	apply(*Image)
+}
+
+type WidthOption struct {
+	Width int
+}
+
+func (o WidthOption) apply(s *Image) {
+	s.Width = o.Width
+}
+
+type HeightOption struct {
+	Height int
+}
+
+func (o HeightOption) apply(s *Image) {
+	s.Height = o.Height
+}
+
+type AltOption struct {
+	Alt string
+}
+
+func (o AltOption) apply(s *Image) {
+	s.Alt = o.Alt
+}
 
 func NewImage(options ...ImageOption) *Image {
 	s := &Image{}
 
 	for _, option := range options {
-		option(s)
+		option.apply(s)
 	}
 
 	return s
-}
-
-func WithWidth(Width int) ImageOption {
-	return func(args *Image) {
-		args.Width = Width
-	}
-}
-
-func WithHeight(Height int) ImageOption {
-	return func(args *Image) {
-		args.Height = Height
-	}
-}
-
-func WithAlt(Alt string) ImageOption {
-	return func(args *Image) {
-		args.Alt = Alt
-	}
 }
