@@ -9,7 +9,7 @@ type {{ .Name }}Option struct {
 	{{ .Name }} {{ .Type }}
 }
 
-func (o {{ .Name }}Option) apply(s {{ $.structName }}) {
+func (o {{ .Name }}Option) apply(s *{{ $.structName }}) {
 	s.{{ .Name }} = o.{{ .Name }}
 }
 {{ end }}{{ end }}

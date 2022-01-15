@@ -61,7 +61,7 @@ type AOption struct {
 	A string
 }
 
-func (o AOption) apply(s TestData) {
+func (o AOption) apply(s *TestData) {
 	s.A = o.A
 }
 
@@ -69,7 +69,7 @@ type BOption struct {
 	B int
 }
 
-func (o BOption) apply(s TestData) {
+func (o BOption) apply(s *TestData) {
 	s.B = o.B
 }
 

@@ -1,6 +1,6 @@
 package examples
 
-//go:generate foggo foc --struct Image
+//go:generate foggo fop --struct Image
 type Image struct {
 	Width  int
 	Height int

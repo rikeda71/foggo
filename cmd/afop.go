@@ -16,25 +16,25 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func initializeFocCommand() *cobra.Command {
-	// focCmd represents the foc command
+func initializeAfopCommand() *cobra.Command {
 	return &cobra.Command{
-		Use:   "foc",
-		Short: "command to generate 'Functional Option Pattern' code of golang",
-		Long: `'foc' is the command to command to generate 'Functional Option Pattern' code of golang.
+		Use:   "afop",
+		Short: "command to generate 'Applicable Functional Option Pattern' code of golang",
+		Long: `'afop' is the command to command to generate 'Applicable Functional Option Pattern' code of golang.
 ref.
-- https://commandcenter.blogspot.com/2014/01/self-referential-functions-and-design.html
-- https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis`,
+- https://github.com/uber-go/guide/blob/master/style.md#functional-options
+- https://ww24.jp/2019/07/go-option-pattern(in Japanese)
+`,
 		RunE: func(_ *cobra.Command, _ []string) error {
 			out := os.Stdout
-			return generateFOC(out)
+			return generateAFOP(out)
 		},
 	}
 }
 
-// generateFOC generate functional option pattern code
-func generateFOC(out io.Writer) error {
-	l := logger.InitializeLogger(out, "[FOC Generator] ")
+// generateAFOP generate functional option pattern code
+func generateAFOP(out io.Writer) error {
+	l := logger.InitializeLogger(out, "[AFOP Generator] ")
 	g := generator.InitializeGenerator()
 	w, err := writer.InitializeWriter(l)
 	if err != nil {
@@ -55,7 +55,7 @@ func generateFOC(out io.Writer) error {
 		return err
 	}
 
-	code, err := g.GenerateFOP(pkg.Name, Args.Struct, fields)
+	code, err := g.GenerateAFOP(pkg.Name, Args.Struct, fields)
 	if err != nil {
 		return err
 	}
