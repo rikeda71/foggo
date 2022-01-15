@@ -60,6 +60,7 @@ $ foggo foc --struct ${STRUCT_TYPE_NAME} --package ${PACKAGE_PATH}
 
 	// set sub commands
 	rootCmd.AddCommand(initializeFocCommand())
+	rootCmd.AddCommand(initializeAfocCommand())
 
 	// set version format
 	rootCmd.SetVersionTemplate("{{ .Version }}")
