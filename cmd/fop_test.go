@@ -20,7 +20,7 @@ func Test_initializeFopCommand(t *testing.T) {
 	a.NotNil(cmd.RunE)
 }
 
-func Test_generateFOC(t *testing.T) {
+func Test_generateFOP(t *testing.T) {
 	tests := []struct {
 		name     string
 		struct_  string

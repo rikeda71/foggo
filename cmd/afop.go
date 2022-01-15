@@ -32,7 +32,7 @@ ref.
 	}
 }
 
-// generateAFOP generate functional option pattern code
+// generateAFOP generate Applicable Functional Option Pattern code
 func generateAFOP(out io.Writer) error {
 	l := logger.InitializeLogger(out, "[AFOP Generator] ")
 	g := generator.InitializeGenerator()

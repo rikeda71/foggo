@@ -23,7 +23,7 @@ Usage:
   foggo (fop|afop) [flags]
 
 Flags:
-  -h, --help   help for foc
+  -h, --help   help for fop
 
 Global Flags:
   -p, --package string   Package name having target struct (default ".")
@@ -46,12 +46,12 @@ Global Flags:
     }
     ```
 
-2. `foggo foc` コマンドを実行。
+2. `foggo fop` コマンドを実行。
 
     ```shell
     # struct パラメータには構造体名を指定します
     # package パラメータには構造体が配置されている相対パスを指定します
-    $ foggo foc --struct Image --package image
+    $ foggo fop --struct Image --package image
     ```
 
 3. `foggo` コマンドにより、以下のような Functional Option Pattern のコードが `./image/image_gen.go` に自動生成されます。
@@ -118,7 +118,7 @@ Global Flags:
     // ./image/image.go
     package image
     
-    //go:generate foggo foc --struct Image 
+    //go:generate foggo fop --struct Image 
     type Image struct {
         Width  int
         Height int
