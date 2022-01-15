@@ -21,4 +21,5 @@ func New{{ .structName }}(options ...{{ .structName }}Option) *{{ .structName }}
 	}
 
 	return s
-}`
+}
+`
