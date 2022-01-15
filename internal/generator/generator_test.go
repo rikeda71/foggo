@@ -52,6 +52,52 @@ func NewTestData(options ...TestDataOption) *TestData {
 	return s
 }
 `
+	expectedAFOPMaximumStr = expectedTemplateBaseStr + `
+type TestDataOption interface {
+	apply(*TestData)
+}
+
+type AOption struct {
+	A string
+}
+
+func (o AOption) apply(s TestData) {
+	s.A = o.A
+}
+
+type BOption struct {
+	B int
+}
+
+func (o BOption) apply(s TestData) {
+	s.B = o.B
+}
+
+func NewTestData(options ...TestDataOption) *TestData {
+	s := &TestData{}
+
+	for _, option := range options {
+		option.apply(s)
+	}
+
+	return s
+}
+`
+	expectedAFOPMinimumStr = expectedTemplateBaseStr + `
+type TestDataOption interface {
+	apply(*TestData)
+}
+
+func NewTestData(options ...TestDataOption) *TestData {
+	s := &TestData{}
+
+	for _, option := range options {
+		option.apply(s)
+	}
+
+	return s
+}
+`
 )
 
 func TestGenerator_GenerateFOP(t *testing.T) {
@@ -83,6 +129,43 @@ func TestGenerator_GenerateFOP(t *testing.T) {
 				goimports: tt.fields.goimports,
 			}
 			got, err := g.GenerateFOP(tt.args.pkgName, tt.args.structName, tt.args.sts)
+			if !tt.wantErr(t, err, fmt.Sprintf("Generator.GenerateFOP(%v)", tt.args)) {
+				return
+			}
+			a.Equal(tt.want, got)
+		})
+	}
+}
+
+func TestGenerator_GenerateAFOP(t *testing.T) {
+	type fields struct {
+		goimports bool
+	}
+	type args struct {
+		pkgName    string
+		structName string
+		sts        []*StructField
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		want    string
+		wantErr assert.ErrorAssertionFunc
+	}{
+		{"nominal: maximum", fields{false}, args{"testdata", "TestData", []*StructField{{Name: "A", Type: "string", Ignore: false}, {Name: "B", Type: "int", Ignore: false}, {Name: "C", Type: "int", Ignore: true}}}, expectedAFOPMaximumStr, assert.NoError},
+		{"nominal: maximum with goimports", fields{true}, args{"testdata", "TestData", []*StructField{{Name: "A", Type: "string", Ignore: false}, {Name: "B", Type: "int", Ignore: false}, {Name: "C", Type: "int", Ignore: true}}}, expectedAFOPMaximumStr, assert.NoError},
+		{"nominal: minimum", fields{false}, args{"testdata", "TestData", []*StructField{}}, expectedAFOPMinimumStr, assert.NoError},
+		{"nominal: minimum with goimports", fields{true}, args{"testdata", "TestData", []*StructField{}}, expectedAFOPMinimumStr, assert.NoError},
+		{"non_nominal: have same name fields", fields{false}, args{"testdata", "TestData", []*StructField{{Name: "A"}, {Name: "a"}}}, "", assert.Error},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			a := assert.New(t)
+			g := &Generator{
+				goimports: tt.fields.goimports,
+			}
+			got, err := g.GenerateAFOP(tt.args.pkgName, tt.args.structName, tt.args.sts)
 			if !tt.wantErr(t, err, fmt.Sprintf("Generator.GenerateFOP(%v)", tt.args)) {
 				return
 			}
