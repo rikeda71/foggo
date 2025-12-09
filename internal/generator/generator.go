@@ -8,7 +8,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/s14t284/foggo/internal/generator/templates"
+	"github.com/rikeda71/foggo/internal/generator/templates"
 )
 
 type Generator struct {

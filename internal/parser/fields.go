@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/fatih/structtag"
-	"github.com/s14t284/foggo/internal/generator"
+	"github.com/rikeda71/foggo/internal/generator"
 )
 
 const (
@@ -91,7 +91,7 @@ func parseTag(tag *ast.BasicLit) (*structtag.Tag, error) {
 		return nil, nil
 	}
 
-	tags, err := structtag.Parse(strings.Replace(tag.Value, "`", "", -1))
+	tags, err := structtag.Parse(strings.ReplaceAll(tag.Value, "`", ""))
 	if err != nil {
 		return nil, fmt.Errorf("parse tag error: %w", err)
 	}

@@ -1,6 +1,5 @@
 /*
-Copyright © 2022 s14t284 rikeda71@gmail.com
-
+Copyright © 2025 rikeda71 rikeda71@gmail.com
 */
 package cmd
 
@@ -9,10 +8,10 @@ import (
 	"os"
 	"path"
 
-	"github.com/s14t284/foggo/internal/generator"
-	"github.com/s14t284/foggo/internal/logger"
-	"github.com/s14t284/foggo/internal/parser"
-	"github.com/s14t284/foggo/internal/writer"
+	"github.com/rikeda71/foggo/internal/generator"
+	"github.com/rikeda71/foggo/internal/logger"
+	"github.com/rikeda71/foggo/internal/parser"
+	"github.com/rikeda71/foggo/internal/writer"
 	"github.com/spf13/cobra"
 )
 

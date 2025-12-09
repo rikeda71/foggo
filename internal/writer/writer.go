@@ -30,7 +30,7 @@ func (w *Writer) Write(code string, baseFileName string) error {
 		return err
 	}
 
-	w.logger.Println(fmt.Sprintf("success to write functional option pattern code to %s", fn))
+	w.logger.Printf("success to write functional option pattern code to %s", fn)
 	return nil
 }
 
