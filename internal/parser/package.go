@@ -7,12 +7,14 @@ import (
 	"golang.org/x/tools/go/packages"
 )
 
+// PackageInfo contains parsed information about a Go package.
 type PackageInfo struct {
 	Name     string
 	AstFiles []*ast.File
 	Paths    []string
 }
 
+// ParsePackageInfo parses package information from the specified path.
 func ParsePackageInfo(p string) (*PackageInfo, error) {
 	cfg := &packages.Config{
 		Mode:  packages.NeedName | packages.NeedSyntax | packages.NeedFiles,
