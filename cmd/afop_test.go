@@ -22,11 +22,11 @@ func Test_initializeAfopCommand(t *testing.T) {
 
 func Test_generateAFOP(t *testing.T) {
 	tests := []struct {
-		name     string
-		struct_  string
-		package_ string
-		wantOut  string
-		wantErr  assert.ErrorAssertionFunc
+		name       string
+		structName string
+		packageDir string
+		wantOut    string
+		wantErr    assert.ErrorAssertionFunc
 	}{
 		{"nominal: Data1", "Data1", "../testdata", "success to write functional option pattern code to", assert.NoError},
 		{"nominal: Data2", "Data2", "../testdata", "success to write functional option pattern code to", assert.NoError},
@@ -35,8 +35,8 @@ func Test_generateAFOP(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			Args.Struct = tt.struct_
-			Args.Package = tt.package_
+			Args.Struct = tt.structName
+			Args.Package = tt.packageDir
 			out := &bytes.Buffer{}
 			err := generateAFOP(out)
 			if !tt.wantErr(t, err, fmt.Sprintf("generateFOP(%v)", out)) {
@@ -45,7 +45,7 @@ func Test_generateAFOP(t *testing.T) {
 			assert.Containsf(t, out.String(), tt.wantOut, "generateAFOP(%v)", out)
 
 			// remove generated files
-			files, err := filepath.Glob(fmt.Sprintf("%s/*_gen.go", tt.package_))
+			files, err := filepath.Glob(fmt.Sprintf("%s/*_gen.go", tt.packageDir))
 			assert.NoError(t, err)
 			for _, f := range files {
 				fmt.Println(f)
