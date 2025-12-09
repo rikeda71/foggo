@@ -8,6 +8,5 @@ linters:
     - staticcheck
     - unused
     - gosimple
-    - typecheck
 
     - revive
