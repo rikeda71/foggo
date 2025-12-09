@@ -1,5 +1,6 @@
 package templates
 
+// FOPTemplate is the template for generating Functional Option Pattern code.
 const FOPTemplate = TemplateBase + `
 type {{ .structName }}Option func(*{{ .structName }})
 

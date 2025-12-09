@@ -1,5 +1,7 @@
+// Package templates provides template definitions for code generation.
 package templates
 
+// AFOPTemplate is the template for generating Applicable Functional Option Pattern code.
 const AFOPTemplate = TemplateBase + `
 type {{ .structName }}Option interface {
 	apply(*{{ .structName }})
