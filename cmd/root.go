@@ -41,7 +41,7 @@ $ foggo fop --struct ${STRUCT_TYPE_NAME} --package ${PACKAGE_PATH}
 ## Generate 'Applicable Functional Option Pattern' code
 $ foggo afop --struct ${STRUCT_TYPE_NAME} --package ${PACKAGE_PATH}
 `,
-		Version: "1.0.0",
+		Version: "1.0.1",
 	}
 
 	// set arguments
