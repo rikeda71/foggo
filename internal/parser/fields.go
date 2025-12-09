@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/fatih/structtag"
-	"github.com/s14t284/foggo/internal/generator"
+	"github.com/rikeda71/foggo/internal/generator"
 )
 
 const (
