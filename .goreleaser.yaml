@@ -1,0 +1,81 @@
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+      - arm
+    goarm:
+      - 6
+      - 7
+    ignore:
+      - goos: darwin
+        goarch: arm
+      - goos: windows
+        goarch: arm64
+      - goos: windows
+        goarch: arm
+    main: ./main.go
+    binary: foggo
+    ldflags:
+      - -s -w -X github.com/rikeda71/foggo/cmd.version={{.Version}}
+
+archives:
+  - formats: tar.gz
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        formats: zip
+    files:
+      - LICENSE
+      - README.md
+      - README.ja.md
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  version_template: "{{ .Tag }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^ci:'
+      - '^refactor:'
+      - '^style:'
+      - '^chore:'
+      - 'Merge pull request'
+      - 'Merge branch'
+      - 'go mod tidy'
+
+release:
+  github:
+    owner: rikeda71
+    name: foggo
+  draft: false
+  prerelease: auto
+  mode: replace
+  header: |
+    ## What's Changed
+  footer: |
+    **Full Changelog**: https://github.com/rikeda71/foggo/compare/{{ .PreviousTag }}...{{ .Tag }}
