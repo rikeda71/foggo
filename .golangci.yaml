@@ -2,11 +2,11 @@ version: "2"
 
 linters:
   enable:
-    - gofmt
-    - goimports
-
     - staticcheck
     - unused
-    - gosimple
-
     - revive
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
