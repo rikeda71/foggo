@@ -1,6 +1,5 @@
-/*
-Copyright © 2025 rikeda71 rikeda71@gmail.com
-*/
+// Package cmd provides CLI commands for foggo.
+// Copyright © 2025 rikeda71 rikeda71@gmail.com
 package cmd
 
 import (
