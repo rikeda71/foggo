@@ -1,3 +1,4 @@
+// Package writer provides functionality for writing generated code to files.
 package writer
 
 import (
@@ -7,10 +8,12 @@ import (
 	"strings"
 )
 
+// Writer handles writing generated code to files.
 type Writer struct {
 	logger *log.Logger
 }
 
+// InitializeWriter creates a new Writer instance.
 func InitializeWriter(logger *log.Logger) (*Writer, error) {
 	if logger == nil {
 		return nil, fmt.Errorf("initialize writer error: logger is nil")
