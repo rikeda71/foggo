@@ -1,17 +1,19 @@
 # foggo
 
-[![ci](https://github.com/s14t284/foggo/actions/workflows/ci.yml/badge.svg)](https://github.com/s14t284/foggo/actions/workflows/ci.yml)
-[![Release](https://github.com/s14t284/foggo/actions/workflows/release.yml/badge.svg)](https://github.com/s14t284/foggo/actions/workflows/release.yml)
-[![Coverage Status](https://coveralls.io/repos/github/s14t284/foggo/badge.svg?branch=main)](https://coveralls.io/github/s14t284/foggo?branch=main)
+[![ci](https://github.com/rikeda71/foggo/actions/workflows/ci.yml/badge.svg)](https://github.com/rikeda71/foggo/actions/workflows/ci.yml)
+[![Release](https://github.com/rikeda71/foggo/actions/workflows/release.yml/badge.svg)](https://github.com/rikeda71/foggo/actions/workflows/release.yml)
+[![Coverage Status](https://coveralls.io/repos/github/rikeda71/foggo/badge.svg?branch=main)](https://coveralls.io/github/rikeda71/foggo?branch=main)
+[![Go Version](https://img.shields.io/badge/Go-1.25-blue.svg)](https://go.dev/)
+[![Release](https://img.shields.io/badge/Release-v1.0.0-green.svg)](https://github.com/rikeda71/foggo/releases)
 
 
-Golang の構造体から `Functional Option Pattern` コードを自動生成する cli 
+Golang の構造体から `Functional Option Pattern` コードを自動生成する cli
 
 ## Installation
 
 ```shell
 $ go install golang.org/x/tools/cmd/goimports@latest  # foggo use 'goimports' command
-$ go install github.com/s14t284/foggo@latest
+$ go install github.com/rikeda71/foggo@latest
 ```
 
 ## Usage
@@ -37,7 +39,7 @@ Global Flags:
     ```go
     // ./image/image.go
     package image
-    
+
     type Image struct {
         Width  int
         Height int
@@ -65,20 +67,20 @@ Global Flags:
 
     func NewImage(options ...ImageOption) *Image {
         s := &Image{}
-    
+
         for _, option := range options {
             option(s)
         }
-    
+
         return s
     }
-    
+
     func WithWidth(Width int) ImageOption {
         return func(args *Image) {
             args.Width = Width
         }
     }
-    
+
     func WithHeight(Height int) ImageOption {
         return func(args *Image) {
             args.Height = Height
@@ -91,14 +93,14 @@ Global Flags:
         }
     }
     ```
-   
+
 4. あとは `Functional Option Pattern` を使って実装するだけです。
 
     ```go
     package main
-   
+
     import "github.com/user/project/image"
-    
+
     func main() {
 	    image := NewImage(
 	    	WithWidth(1280),
@@ -117,12 +119,12 @@ Global Flags:
     ```go
     // ./image/image.go
     package image
-    
-    //go:generate foggo fop --struct Image 
+
+    //go:generate foggo fop --struct Image
     type Image struct {
         Width  int
         Height int
-        // don't want to create option, specify `foggo:"-"` as the structure tag 
+        // don't want to create option, specify `foggo:"-"` as the structure tag
         Src    string `foggo:"-"`
         Alt    string
     }
@@ -145,12 +147,12 @@ Global Flags:
     ```go
     // ./image/image.go
     package image
-    
-    //go:generate foggo afop --struct Image 
+
+    //go:generate foggo afop --struct Image
     type Image struct {
         Width  int
         Height int
-        // don't want to create option, specify `foggo:"-"` as the structure tag 
+        // don't want to create option, specify `foggo:"-"` as the structure tag
         Src    string `foggo:"-"`
         Alt    string
     }
@@ -179,7 +181,7 @@ Global Flags:
 
     func (o WidthOption) apply(s *Image) {
         s.Width = o.Width
-    } 
+    }
 
     type HeightOption struct {
         Height int
@@ -212,9 +214,9 @@ Global Flags:
 
     ```go
     package main
-   
+
     import "github.com/user/project/image"
-    
+
     func main() {
         image := NewImage(
             WidthOption(1280),
@@ -251,7 +253,7 @@ Go言語では構造体は比較可能であるため、同一引数を持つオ
 
 `AFOP` については以下の記事が詳しいです。
 
-- [Functional Options Pattern に次ぐ、オプション引数を実現する方法](https://ww24.jp/2019/07/go-option-pattern) 
+- [Functional Options Pattern に次ぐ、オプション引数を実現する方法](https://ww24.jp/2019/07/go-option-pattern)
   - `Applicable Functional Option Pattern` はこの記事で命名されているため名称を拝借しました
 - https://github.com/uber-go/guide/blob/master/style.md#functional-options
 
