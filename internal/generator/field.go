@@ -1,5 +1,7 @@
+// Package generator provides code generation functionality for functional option patterns.
 package generator
 
+// StructField represents a field within a Go struct.
 type StructField struct {
 	// Name is field name in the structure
 	Name string

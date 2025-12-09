@@ -11,10 +11,12 @@ import (
 	"github.com/rikeda71/foggo/internal/generator/templates"
 )
 
+// Generator is responsible for generating functional option pattern code.
 type Generator struct {
 	goimports bool
 }
 
+// InitializeGenerator creates a new Generator instance.
 func InitializeGenerator() *Generator {
 	return &Generator{
 		goimports: true,

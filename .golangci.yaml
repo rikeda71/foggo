@@ -1,0 +1,12 @@
+version: "2"
+
+linters:
+  enable:
+    - staticcheck
+    - unused
+    - revive
+
+formatters:
+  enable:
+    - gofmt
+    - goimports

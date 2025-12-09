@@ -1,3 +1,4 @@
+// Package parser provides utilities for parsing Go source code.
 package parser
 
 import (
@@ -11,7 +12,9 @@ import (
 )
 
 const (
-	TagKey      = "foggo"
+	// TagKey is the struct tag key used by foggo.
+	TagKey = "foggo"
+	// IgnoreValue is the tag value that indicates a field should be ignored.
 	IgnoreValue = "-"
 )
 
